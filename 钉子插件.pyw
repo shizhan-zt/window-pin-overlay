@@ -21,7 +21,7 @@ k.CloseHandle.argtypes=[ctypes.wintypes.HANDLE]
 dwm.DwmGetWindowAttribute.restype=ctypes.c_long
 dwm.DwmGetWindowAttribute.argtypes=[ctypes.wintypes.HWND,ctypes.c_uint,ctypes.c_void_p,ctypes.c_uint]
 HT=ctypes.wintypes.HWND(-1);HN=ctypes.wintypes.HWND(-2);TOP=ctypes.wintypes.HWND(0);F=1|2|0x10
-SZ=22;POLL=16;WM_T=0x0113;TID=1;EXISTS=183;MUTEX='Local\\DingziPluginOverlay'
+SZ=24;POLL=8;WM_T=0x0113;TID=1;EXISTS=183;MUTEX='Local\\DingziPluginOverlay'
 NS=1;NM=2;NZ=4;NA=0x10;SHOW=0x40;NOACT=0x08000000
 
 class MONITORINFO(ctypes.Structure):
@@ -145,7 +145,7 @@ class Ov:
     x,y=mp(s.sv);z=sz(s.sv)
     if x!=s._lx or y!=s._ly or z!=s.z:
      s._lx=x;s._ly=y;s.z=z
-     u.SetWindowPos(s.ov,HT,x,y,z,z,NA)
+    u.SetWindowPos(s.ov,HT,s._lx,s._ly,s.z,s.z,NA|SHOW)
     if not u.IsWindowVisible(s.ov):u.ShowWindow(s.ov,8)
    else:
     if n and vl(n)and vs(n)and n!=u.GetDesktopWindow()and n not in s.my:
