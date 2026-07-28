@@ -132,7 +132,6 @@ class Ov:
     s._hide()
     return 0
    if n in s.my:
-    if not s.pin:s._hide()
     return 0
    # Skip desktop/taskbar windows
    if not n or wn(n)in s._cls:
