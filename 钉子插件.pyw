@@ -94,6 +94,8 @@ g.CreateSolidBrush.argtypes=[ctypes.wintypes.DWORD];g.CreateSolidBrush.restype=c
 g.SelectObject.argtypes=[ctypes.c_void_p,ctypes.c_void_p];g.SelectObject.restype=ctypes.c_void_p
 g.Ellipse.argtypes=[ctypes.c_void_p,ctypes.c_int,ctypes.c_int,ctypes.c_int,ctypes.c_int]
 g.Rectangle.argtypes=[ctypes.c_void_p,ctypes.c_int,ctypes.c_int,ctypes.c_int,ctypes.c_int]
+g.CreatePen.argtypes=[ctypes.c_int,ctypes.c_int,ctypes.wintypes.DWORD];g.CreatePen.restype=ctypes.c_void_p
+g.MoveToEx.argtypes=[ctypes.c_void_p,ctypes.c_int,ctypes.c_int,ctypes.c_void_p];g.LineTo.argtypes=[ctypes.c_void_p,ctypes.c_int,ctypes.c_int]
 g.DeleteObject.argtypes=[ctypes.c_void_p]
 u.GetDC.argtypes=[ctypes.wintypes.HWND];u.GetDC.restype=ctypes.c_void_p
 u.ReleaseDC.argtypes=[ctypes.wintypes.HWND,ctypes.c_void_p];g.GetDeviceCaps.argtypes=[ctypes.c_void_p,ctypes.c_int]
@@ -186,15 +188,11 @@ class Ov:
    if not u.BeginPaint(h,ctypes.byref(ps)):return 0
    hdc=ps.hdc
    cv=0xeb6325 if s.pin else 0xb8a394
-   br=g.CreateSolidBrush(cv)
-   old=g.SelectObject(hdc,br)
-   z=s.z;m=max(2,z//11);g.Ellipse(hdc,m,m,z-m,z-m)
-   g.SelectObject(hdc,br)
-   q=max(2,z//11);g.Rectangle(hdc,z//2-q,int(z*.68),z//2+q,z-m)
-   bw=g.CreateSolidBrush(0xffffff)
-   g.SelectObject(hdc,bw)
-   g.Ellipse(hdc,z//2-q,int(z*.27),z//2+q,int(z*.45))
-   g.SelectObject(hdc,old);g.DeleteObject(bw);g.DeleteObject(br)
+   z=s.z;p=g.CreatePen(0,max(1,round(z/12)),cv);old=g.SelectObject(hdc,p)
+   a=int(z*.30);b=int(z*.70);t=int(z*.22);m=int(z*.43);q=int(z*.61);c=z//2
+   g.MoveToEx(hdc,a,t,None);g.LineTo(hdc,b,t);g.LineTo(hdc,int(z*.60),m);g.LineTo(hdc,int(z*.74),q);g.LineTo(hdc,int(z*.26),q);g.LineTo(hdc,int(z*.40),m);g.LineTo(hdc,a,t)
+   g.MoveToEx(hdc,c,q,None);g.LineTo(hdc,c,int(z*.83))
+   g.SelectObject(hdc,old);g.DeleteObject(p)
    u.EndPaint(h,ctypes.byref(ps))
    return 0
   return u.DefWindowProcW(h,m,w,l)
