@@ -1,0 +1,14 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# PyInstaller output
+build/
+dist/
+*.spec
+
+# Local builds and archives
+钉子插件.exe
+发布包/
+历史版本/
+构建缓存/
